@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Covid19 Analytics</title>
+        <meta charset="utf-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
+    </head>
+    <body>
+        <p>Total Beneficiaries: {{totalBeneficiaries}}</p>
+        <p> Total AEFI: {{totalAEFI}} </p>
+        <p>Date:{{Date}}</p>
+        <ul>
+        {%  for sv in StatesVaccinated %}
+            <li>{{ sv.0 }} : {{ sv.1 }}</li>
+        {% endfor %}
+        </ul>
+        {{ graph|safe }}
+        {{ graph1|safe }}
+    <body>
+</html>
