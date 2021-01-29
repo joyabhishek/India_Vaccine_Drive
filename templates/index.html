@@ -41,6 +41,7 @@
             <div class="col-sm-2">
             </div> 
           </div>
+          <p>Date:{{Date}}</p>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -58,25 +59,45 @@
               </tbody>
             </table>
             {{ graph|safe }}
+            {{ graph1|safe }}
+        
+            <form action="{{ url_for('index') }}" method="post">
+                <label for="date">Choose a date:</label>
+                <select id="date" name="date">
+                    {% for date in dates %}
+                        <option value="{{date}}">{{date}}</option>
+                    {% endfor %}
+                </select>
+                <button>Submit</button>
+            </form>
+            <p>Date: {{dateReqInfo}}</p>
+            <p>AEFI: {{dateReqAEFI}}</p>
+            {% if dateReqvaccine is not none %}   
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col" colspan="2">States</th>
+                      <th scope="col">Vaccinated</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%  for sv in dateReqvaccine %}
+                        <tr>
+                            <td colspan="2">{{ sv.0 }}</td>
+                            <td>{{ sv.1 }}</td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            {% endif %}
         </div>
-        <p>Total Beneficiaries: {{totalBeneficiaries}}</p>
-        <p> Total AEFI: {{totalAEFI}} </p>
-        <p>Date:{{Date}}</p>
         <ul>
         {%  for sv in StatesVaccinated %}
             <li>{{ sv.0 }} : {{ sv.1 }}</li>
         {% endfor %}
         </ul>
         {{ graph|safe }}
-        {{ graph1|safe }}
-        <form action="{{ url_for('index') }}" method="post">
-            <label for="date">Choose a date:</label>
-            <select id="date" name="date">
-                {% for date in dates %}
-                    <option value="{{date}}">{{date}}</option>
-                {% endfor %}
-            </select>
-            <button>Submit</button>
-        </form>
+
+    
     <body>
 </html>

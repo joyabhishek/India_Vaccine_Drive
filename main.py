@@ -4,8 +4,8 @@ from nvd3 import discreteBarChart
 
 app = Flask(__name__)
 
-def barChart(xData, yData):
-	chart = discreteBarChart(width=700, height=400, x_axis_format=None, name='Hi')
+def barChart(xData, yData, gid):
+	chart = discreteBarChart(width=1000, height=400, x_axis_format=None, name=gid)
 	xdata = xData
 	ydata1 = yData
 
@@ -36,7 +36,7 @@ def index():
 	cummSessions = [int("".join(i.split(','))) for i in df.iloc[1,1:].values]
 
 	#Get AEFI for requested date	
-	dateReqvaccine = None
+	dateReqvaccine = []
 	dateReqInfo = None
 	dateReqAEFI = None
 	if request.method == "POST":
@@ -45,10 +45,16 @@ def index():
 		dateReqInfo = "-".join(dateReqInfo.split()) + "-21"
 		print(f"Got Date: {dateReqInfo}")
 		if dateReqInfo in df_single.columns:
-			dateReqvaccine = df_single[dateReqInfo]
+			dateReqvaccine = list(df_single[dateReqInfo].values)
 		dateReqAEFI = df[dateReqInfo][2]
 		print(f"{dateReqvaccine} AEFI: {dateReqAEFI}")
+	elif request.method == "GET":
+		dateReqInfo = df_single.iloc[:,-1].name
+		dateReqvaccine = list(df_single.iloc[:,-1].values)
+		dateReqAEFI = df[dateReqInfo][2]
 		
-	#TODO: Line 48 get single day vaccine counts and states, in HTML by default the latest single day counts vc states should be shown
+	#TODO: Fix the graph
 	print(f"Total Beneficiaries:{totalBeneficiaries} Total AEFI: {totalAEFI}")
-	return render_template("index.html",totalBeneficiaries=totalBeneficiaries, totalAEFI=totalAEFI, StatesVaccinated=zip(states,vaccinated), Date=Date, graph=barChart(dates,cummVaccinated), graph1=barChart(dates,cummSessions), dates=dates) 
+	return render_template("index.html",totalBeneficiaries=totalBeneficiaries, totalAEFI=totalAEFI, StatesVaccinated=zip(states,vaccinated), Date=Date, graph=barChart(dates,cummVaccinated,'g'), graph1=barChart(dates,cummSessions,'g1'), dates=dates,dateReqvaccine =  zip(states, dateReqvaccine) if len(dateReqvaccine) > 0 else None,
+	dateReqInfo = dateReqInfo,
+	dateReqAEFI = dateReqAEFI) 
