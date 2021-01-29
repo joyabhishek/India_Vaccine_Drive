@@ -1,12 +1,64 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Covid19 Analytics</title>
+        <title>Covid19 India Vaccine Drive</title>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
     </head>
     <body>
+        <nav class="navbar navbar-light bg-light">
+          <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1" >Covid19 India Vaccine Drive</span>
+          </div>
+        </nav>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-1">
+            </div> 
+            <div class="col-sm-4">
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">Total Vaccinated</h4>
+                <hr>
+                <p>{{totalBeneficiaries}}</p>
+                </div>
+            </div>
+            <div class="col-sm-2">
+            </div>      
+            <div class="col-sm-4">
+                <div class="alert alert-dark" role="alert">
+                <h4 class="alert-heading">Total AEFI</h4>
+                <hr>
+                <p>{{totalAEFI}}</p>
+                </div>
+            </div>
+            <div class="col-sm-2">
+            </div> 
+          </div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2">States</th>
+                  <th scope="col">Vaccinated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%  for sv in StatesVaccinated %}
+                    <tr>
+                        <td colspan="2">{{ sv.0 }}</td>
+                        <td>{{ sv.1 }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {{ graph|safe }}
+        </div>
         <p>Total Beneficiaries: {{totalBeneficiaries}}</p>
         <p> Total AEFI: {{totalAEFI}} </p>
         <p>Date:{{Date}}</p>
@@ -17,5 +69,14 @@
         </ul>
         {{ graph|safe }}
         {{ graph1|safe }}
+        <form action="{{ url_for('index') }}" method="post">
+            <label for="date">Choose a date:</label>
+            <select id="date" name="date">
+                {% for date in dates %}
+                    <option value="{{date}}">{{date}}</option>
+                {% endfor %}
+            </select>
+            <button>Submit</button>
+        </form>
     <body>
 </html>

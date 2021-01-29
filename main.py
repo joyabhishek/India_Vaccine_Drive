@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 import pandas as pd
 from nvd3 import discreteBarChart
 
@@ -13,10 +13,12 @@ def barChart(xData, yData):
 	chart.buildcontent()
 	return  chart.htmlcontent
 
-@app.route('/')
+@app.route('/', methods=["GET","POST"])
 def index():
 	df = pd.read_csv('Benef_Sessions_AEFI.csv')
 	df_cumm = pd.read_csv('CumulativeVaccineCount.csv')
+	df_single = pd.read_csv('SingleDayVaccineCount.csv')
+
 	df_cumm = df_cumm.dropna()
 	
 	#Getting total vaccinated and Total AEFI
@@ -33,5 +35,20 @@ def index():
 	cummVaccinated = [int("".join(i.split(','))) for i in df.iloc[0,1:].values]
 	cummSessions = [int("".join(i.split(','))) for i in df.iloc[1,1:].values]
 
+	#Get AEFI for requested date	
+	dateReqvaccine = None
+	dateReqInfo = None
+	dateReqAEFI = None
+	if request.method == "POST":
+		dateReqInfo = request.form.get("date")
+		print(f"Got Date: {dateReqInfo}")
+		dateReqInfo = "-".join(dateReqInfo.split()) + "-21"
+		print(f"Got Date: {dateReqInfo}")
+		if dateReqInfo in df_single.columns:
+			dateReqvaccine = df_single[dateReqInfo]
+		dateReqAEFI = df[dateReqInfo][2]
+		print(f"{dateReqvaccine} AEFI: {dateReqAEFI}")
+		
+	#TODO: Line 48 get single day vaccine counts and states, in HTML by default the latest single day counts vc states should be shown
 	print(f"Total Beneficiaries:{totalBeneficiaries} Total AEFI: {totalAEFI}")
-	return render_template("index.html",totalBeneficiaries=totalBeneficiaries, totalAEFI=totalAEFI, StatesVaccinated=zip(states,vaccinated), Date=Date, graph=barChart(dates,cummVaccinated)) 
+	return render_template("index.html",totalBeneficiaries=totalBeneficiaries, totalAEFI=totalAEFI, StatesVaccinated=zip(states,vaccinated), Date=Date, graph=barChart(dates,cummVaccinated), graph1=barChart(dates,cummSessions), dates=dates) 
