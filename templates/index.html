@@ -11,6 +11,9 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
+
+
+
     </head>
     <body>
         <nav class="navbar navbar-light bg-light">
@@ -18,12 +21,10 @@
             <span class="navbar-brand mb-0 h1" >Covid19 India Vaccine Drive</span>
           </div>
         </nav>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-1">
-            </div> 
-            <div class="col-sm-4">
-                <div class="alert alert-info" role="alert">
+        <div class="container my-5">
+          <div class="row"> 
+            <div class="col-sm-5 p-0">
+                <div class="alert alert-success" align="center" role="alert">
                     <h4 class="alert-heading">Total Vaccinated</h4>
                 <hr>
                 <p>{{totalBeneficiaries}}</p>
@@ -31,17 +32,19 @@
             </div>
             <div class="col-sm-2">
             </div>      
-            <div class="col-sm-4">
-                <div class="alert alert-dark" role="alert">
+            <div class="col-sm-5 p-0">
+                <div class="alert alert-dark" align="center" role="alert">
                 <h4 class="alert-heading">Total AEFI</h4>
                 <hr>
                 <p>{{totalAEFI}}</p>
                 </div>
             </div>
-            <div class="col-sm-2">
-            </div> 
           </div>
-          <p>Date:{{Date}}</p>
+            <div class="row">
+                <div class="alert alert-primary col-sm-3" align="center" role="alert">
+                Date:{{Date}}
+                </div>
+            </div>
             <table class="table table-striped">
               <thead>
                 <tr>

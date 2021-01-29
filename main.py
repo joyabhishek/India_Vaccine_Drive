@@ -5,7 +5,7 @@ from nvd3 import discreteBarChart
 app = Flask(__name__)
 
 def barChart(xData, yData, gid):
-	chart = discreteBarChart(width=1000, height=400, x_axis_format=None, name=gid)
+	chart = discreteBarChart(width=800, height=400, x_axis_format=None, resize =True, name=gid)
 	xdata = xData
 	ydata1 = yData
 
