@@ -11,9 +11,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
-
-
-
     </head>
     <body>
         <nav class="navbar navbar-light bg-light">
@@ -64,17 +61,30 @@
             {{ graph|safe }}
             {{ graph1|safe }}
         
-            <form action="{{ url_for('index') }}" method="post">
-                <label for="date">Choose a date:</label>
-                <select id="date" name="date">
-                    {% for date in dates %}
-                        <option value="{{date}}">{{date}}</option>
-                    {% endfor %}
-                </select>
-                <button>Submit</button>
+            <form class="row g-3 mt-3" action="{{ url_for('index') }}" method="post">
+                <legend >Vaccine Drive status on a day</legend>
+                <div class="col-auto">
+                    <label for="date">Choose a date:</label>
+                    <select id="date" name="date">
+                        {% for date in dates %}
+                            <option value="{{date}}">{{date}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">    
+                    <button class="btn btn-primary mb-3">Submit</button>
+                </div>
             </form>
-            <p>Date: {{dateReqInfo}}</p>
-            <p>AEFI: {{dateReqAEFI}}</p>
+            <div class="row">
+                <div class="alert alert-primary col-sm-3" align="center" role="alert">
+                Date: {{dateReqInfo}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert alert-primary col-sm-3" align="center" role="alert">
+                Total AEFI : {{dateReqAEFI}}
+                </div>
+            </div>
             {% if dateReqvaccine is not none %}   
                 <table class="table table-striped">
                   <thead>
@@ -92,15 +102,15 @@
                     {% endfor %}
                   </tbody>
                 </table>
+            {% else %}
+            <div class="row">
+                <div class="alert alert-danger col-sm-3" align="center" role="alert">
+                No single day data available
+                </div>
+            </div>
             {% endif %}
         </div>
         <ul>
-        {%  for sv in StatesVaccinated %}
-            <li>{{ sv.0 }} : {{ sv.1 }}</li>
-        {% endfor %}
-        </ul>
-        {{ graph|safe }}
 
-    
     <body>
 </html>
